@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+*.suo
+/Debug
+/*.ncb
+/*.sdf
+/*.user
+/x64/Debug
+/x64/Release
