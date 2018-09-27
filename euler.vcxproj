@@ -156,13 +156,15 @@
     <ClCompile Include="Primes.cpp" />
     <ClCompile Include="Problem.cpp" />
     <ClCompile Include="Problems1_25.cpp" />
-    <ClCompile Include="Problems51-75.cpp" />
+    <ClCompile Include="Problems26_50.cpp" />
+    <ClCompile Include="Problems51_75.cpp" />
     <ClCompile Include="Stopwatch.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigInteger.h" />
     <ClInclude Include="GeneralMaths.h" />
+    <ClInclude Include="Poker.h" />
     <ClInclude Include="Primes.h" />
     <ClInclude Include="Problem.h" />
     <ClInclude Include="Problems.h" />

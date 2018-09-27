@@ -51,11 +51,30 @@ void BigInteger::Add(BigInteger &n)
 
 
 
-void BigInteger::Multiply(int n)
+void BigInteger::Multiply(BigInteger &n)
 {
 	BigInteger current = *this;
-	for(int i = 1; i < n; i++)
-		this->Add(current);
+    BigInteger i("1");
+    BigInteger one("1");
+    while (i < n)
+    {
+        this->Add(current);
+        i.Add(one);
+    }
+}
+
+void BigInteger::Multiply(int n)
+{
+    BigInteger current = *this;
+    for (int i = 1; i < n; i++)
+        this->Add(current);
+}
+
+void BigInteger::Pow(int n)
+{
+    BigInteger current = *this;
+    for (int i = 1; i < n; i++)
+        this->Multiply(current);
 }
 
 

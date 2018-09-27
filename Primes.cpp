@@ -54,7 +54,8 @@ vector<int> GeneratePrimes(int max)
 
 	}
 
-	for(size_t i = 0; i < possibles.size(); i++)
+    int size = static_cast<int>(possibles.size());
+	for(int i = 0; i < size; i++)
 		if(possibles[i])
 			primes.push_back(i*2 + 3);
 
@@ -92,21 +93,22 @@ void GeneratePrimesTest()
 
 static vector<int> s_primes;
 
-map<int, int> PrimeFactorise(__int64 n, int usePrimesUnder)
+map<int64_t, int> PrimeFactorise(__int64 n, int usePrimesUnder)
 {
 
 	if(s_primes.size() == 0)
 		s_primes = GeneratePrimes(usePrimesUnder);
 
 	//cout << "Finding factors:" << endl;
-	map<int, int> primeFactors;
-	__int64 prime = 0;
-	__int64 primeFactor = 0;
-	__int64 power = 1;
+	map<int64_t, int> primeFactors;
+	int64_t prime = 0;
+    int64_t primeFactor = 0;
+    int64_t power = 1;
 
-	__int64 limit = n/2;
+    int64_t limit = n/2;
 
-	for(int i = 0; i < (int)s_primes.size(); i++)
+    int size = static_cast<int>(s_primes.size());
+	for(int i = 0; i < size; i++)
 	{
 		prime = s_primes[i];
 		if(prime > limit) break;
@@ -125,7 +127,7 @@ map<int, int> PrimeFactorise(__int64 n, int usePrimesUnder)
 }
 
 
-
+// TODO: optionally use sieve
 bool IsPrime(int a)
 {
 
@@ -152,6 +154,27 @@ bool IsPrime(int a)
     }
 
     return true;
+}
+
+
+// TODO: use sieve
+int64_t GetPrime(int index)
+{
+
+    int currentIndex = 1;	// first prime is 2
+    int num = 3;
+    while (currentIndex < index)
+    {
+        if (IsPrime(num))
+        {
+            currentIndex++;
+        }
+        if (currentIndex >= index) break;
+
+        num += 2;
+    }
+
+    return num;
 }
 
 

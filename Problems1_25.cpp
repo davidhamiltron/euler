@@ -8,6 +8,7 @@
 #include "Problems.h"
 #include "GeneralMaths.h"
 #include "Primes.h"
+#include "String.h"
 
 using namespace std;
 
@@ -59,9 +60,9 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
 
         int64_t largestFactor = 0;
         int64_t num = 600851475143;
-        map<int, int> factors = PrimeFactorise(num, 10000);//(__int64) sqrt((double)iNum));
+        auto factors = PrimeFactorise(num, 10000);//(__int64) sqrt((double)iNum));
 
-        map<int, int>::iterator mapItr = factors.begin();
+        auto mapItr = factors.begin();
         while (mapItr != factors.end())
         {
             if ((*mapItr).second)
@@ -147,6 +148,16 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
 
     ProblemEnd
 
+    ProblemStart(7, "Find the 10001st prime.")
+
+        __int64 iPrime = 0;
+        int iIndex = 10001;
+        iPrime = GetPrime(iIndex);
+
+        answer = iPrime;
+
+    ProblemEnd
+
     ProblemStart(21, "Evaluate the sum of all the amicable numbers under 10000.")
 
         vector<int> sumsByN;
@@ -213,7 +224,7 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
             }
 
         }
-        cout << "Finding difference " << endl;
+
         vector<int> result;
 
         set_difference(allTo28123.begin(), allTo28123.end(), abundantSums.begin(), abundantSums.end(), std::back_inserter(result));
@@ -223,44 +234,88 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
 
         answer = sum;
 
-        ProblemEnd
+    ProblemEnd
 
-            ProblemStart(24, "What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?")
-            /*
-            vector<string> permutations;
+    ProblemStart(24, "What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?")
+        
+        vector<int> s = { 0,1,2,3,4,5,6,7,8,9 };
+        //vector<int> s = { 1,2,3,4 };
+        int length = (int)s.size();
+        int right = length - 1;
+        int left = right - 1;
+        int pivot = 0;
+        int scan = 0;
+        int temp = 0;
 
-            string travelling = "";
-            string remaining = "";
-
-            for (int i = 0; i < 1000000; i++)
-            {
-                // 0123456789
-                // 1023456789
-                // 1203456789
-
-                // 2013456789
-                // 210
-                permutations.push_back()
-            }*/
-
-            ProblemEnd
-
-            ProblemStart(25, "What is the index of the first term in the Fibonacci sequence to contain 1000 digits?")
-
-            BigInteger fib("1");
-            BigInteger prev("1");
-            BigInteger newPrev("1");
-            int index = 2;
-            for (;;)
-            {
-                newPrev = fib;
-                fib.Add(prev);
-                prev = newPrev;
-                index++;
-                if (fib.Size() >= 1000)
-                    break; 
+        for (int i = 1; i < 1000000; i++)
+        {
+            right = length - 1;
+            left = right - 1;
+            // find the longest non increasing suffix
+            while (left != -1 && s[left] > s[right]) {
+                left--;
+                right--;
             }
-            answer = index;
+            if (left == -1) {
+                cout << "reached max number" << endl;
+                break;
+            }
+            // left is now the pivot
+            pivot = left;
+
+            // find rightmost successor
+            while (right != length && s[pivot] < s[right]) {
+                left++;
+                right++;
+            }
+
+            // swap
+            temp = s[left];
+            s[left] = s[pivot];
+            s[pivot] = temp;
+
+            // reverse suffix
+
+            left = pivot + 1;
+            right = length - 1;
+            while (left < right)
+            {
+                temp = s[left];
+                s[left] = s[right];
+                s[right] = temp;
+                left++;
+                right--;
+            }
+        }
+
+        int64_t num = 0;
+        int m = 1;
+        int size = static_cast<int>(s.size());
+        for (int i = size - 1; i >= 0; i--)
+        {
+            num += m * s[i];
+            m *= 10;
+        }
+        answer = num;
+
+    ProblemEnd
+
+    ProblemStart(25, "What is the index of the first term in the Fibonacci sequence to contain 1000 digits?")
+
+        BigInteger fib("1");
+        BigInteger prev("1");
+        BigInteger newPrev("1");
+        int index = 2;
+        for (;;)
+        {
+            newPrev = fib;
+            fib.Add(prev);
+            prev = newPrev;
+            index++;
+            if (fib.NumDigits() >= 1000)
+                break; 
+        }
+        answer = index;
 
     ProblemEndLast
 

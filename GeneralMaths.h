@@ -9,7 +9,7 @@ static int Fibonacci(int a, int b)
     return a + b;
 }
 
-static int Fibonacci(int n)
+static int64_t Fibonacci(int n)
 {
     int64_t fib = 1;
     int64_t prev = 1;
