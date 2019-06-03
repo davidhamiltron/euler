@@ -11,7 +11,7 @@ public:
 
 	BigInteger(const std::string &number);
 
-    std::string ToString();
+    std::string ToString() const;
 
 	int Digit(int index);
 
@@ -26,25 +26,13 @@ public:
 
     int NumDigits() { return static_cast<int>(m_number.size()); }
 
-    bool operator <(BigInteger& d) {
-        auto num = d.GetNumber();
-        if (m_number.size() < num.size()) {
-            return true;
-        }
-        if (m_number.size() > num.size()) {
-            return false;
-        }
-        for (auto i = 0; i < m_number.size(); i++)
-        {
-            if (m_number[i] < num[i])
-                return true;
-        }
-        return false;
-    }
+    friend bool operator <(const BigInteger &a, const BigInteger &b);
 
 private:
     std::vector<int> m_number;
 
 };
+
+std::ostream& operator<< (std::ostream& os, const BigInteger& i);
 
 void BigIntegerTest();

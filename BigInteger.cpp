@@ -21,9 +21,9 @@ BigInteger::BigInteger(const string &number)
 		m_number.push_back((int)number[i] - 48);
 }
 
-string BigInteger::ToString()
+string BigInteger::ToString() const
 {
-	vector<int>::reverse_iterator i = m_number.rbegin();
+	vector<int>::const_reverse_iterator i = m_number.rbegin();
 	string number = "";
 	while(i != m_number.rend())
 	{
@@ -114,7 +114,30 @@ static vector<int> Add(const vector<int> &vn, const vector<int> &vm)
 	return r;
 }
 
+bool operator <(const BigInteger &a, const BigInteger &b) {
 
+    if (a.m_number.size() < b.m_number.size()) {
+        return true;
+    }
+    if (a.m_number.size() > b.m_number.size()) {
+        return false;
+    }
+    for (int i = ((int)(a.m_number.size())) - 1; i >= 0; i--)
+    {
+        if (a.m_number[i] == b.m_number[i]) continue;
+        if (a.m_number[i] < b.m_number[i])
+            return true;
+        else
+            return false;
+    }
+    return false;
+}
+
+std::ostream& operator<< (std::ostream& os, const BigInteger& i)
+{
+    os << i.ToString();
+    return os;
+}
 
 
 void BigIntegerTest()
