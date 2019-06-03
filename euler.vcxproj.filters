@@ -39,9 +39,6 @@
     <ClCompile Include="BigInteger.cpp">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
-    <ClCompile Include="Problem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Problems1_25.cpp">
       <Filter>Source Files\Problems</Filter>
     </ClCompile>
@@ -49,6 +46,21 @@
       <Filter>Source Files\Problems</Filter>
     </ClCompile>
     <ClCompile Include="Problems26_50.cpp">
+      <Filter>Source Files\Problems</Filter>
+    </ClCompile>
+    <ClCompile Include="problems\1.cpp">
+      <Filter>Source Files\Problems</Filter>
+    </ClCompile>
+    <ClCompile Include="ProblemLambda.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Problem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="problems\26.cpp">
+      <Filter>Source Files\Problems</Filter>
+    </ClCompile>
+    <ClCompile Include="problems\29.cpp">
       <Filter>Source Files\Problems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="Poker.h">
       <Filter>Header Files\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="ProblemLambda.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

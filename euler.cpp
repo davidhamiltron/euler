@@ -12,23 +12,26 @@
 
 using namespace std;
 
+// Global variable to hold all problems, we will add to this in GetProblems
+std::map<int, ProblemLambda> allProblems;
+
 int ParseCommandLine(int argc, char* argv[]);
 
 void main(int argc, char* argv[])
 {
 	int problemNum = ParseCommandLine(argc, argv);
 
-	map<int, Problem> problems = Problems();
+	GetProblems();
 
 	cout << "Project Euler" << endl << endl;
 
 	if(problemNum != 0)
 	{
-        problems[problemNum].Solve();
+        allProblems[problemNum].Solve();
 	}
     else
     {
-        for (auto problem : problems)
+        for (auto problem : allProblems)
         {
             problem.second.Solve();
             cout << endl;

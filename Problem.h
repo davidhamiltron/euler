@@ -8,23 +8,24 @@ using namespace std;
 class Problem
 {
 public:
-    Problem() {}
-    Problem(int number, std::string &description, std::function<std::string()> solver);
+    
+    Problem(int number, const std::string &description);
+    int Number();
+    std::string Description();
+    int Answer();
+    int Report();
 
-    void Solve();
-	string Description() { return description; };
-	string Answer() { return answer; };
-    void Report();
+protected:
+    // Child classes should override
+    virtual int Solve() = 0;
 
 private:
     int number = 0;
-    int64_t durationMs = 0;
-	string description;
-	string answer;
-    std::function<std::string()> solver = nullptr;
+    string description;
+    int answer = 0;
 };
 
-
+/*
 
 
 class Problem2 : public Problem
@@ -214,3 +215,4 @@ public:
 	string Name() { return "Problem 67";}
 	bool Solve();
 };
+*/

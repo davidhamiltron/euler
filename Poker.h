@@ -162,7 +162,7 @@ namespace Poker
             if (straight)
             {
                 result = Straight;
-                cardValues.push_back[cards[4].value];
+                //cardValues.push_back[cards[4].value];
             }
 
             if (sameCount[0] == 3)
@@ -252,6 +252,7 @@ namespace Poker
 
         int Result()
         {
+            /*
             if (hands[0].Score() > hands[1].Score())
             {
                 std::cout << "Player 1 won" << std::endl;
@@ -262,6 +263,8 @@ namespace Poker
                 std::cout << "Player 2 won" << std::endl;
                 return 2;
             }
+            */
+            return 1;
         }
     };
 

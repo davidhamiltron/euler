@@ -22,6 +22,7 @@
     <ProjectGuid>{38B46519-E622-4144-9B90-6679A56A9CCA}</ProjectGuid>
     <RootNamespace>euler</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -32,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -43,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -155,15 +156,20 @@
     <ClCompile Include="euler.cpp" />
     <ClCompile Include="Primes.cpp" />
     <ClCompile Include="Problem.cpp" />
+    <ClCompile Include="ProblemLambda.cpp" />
     <ClCompile Include="Problems1_25.cpp" />
     <ClCompile Include="Problems26_50.cpp" />
     <ClCompile Include="Problems51_75.cpp" />
+    <ClCompile Include="problems\1.cpp" />
+    <ClCompile Include="problems\26.cpp" />
+    <ClCompile Include="problems\29.cpp" />
     <ClCompile Include="Stopwatch.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigInteger.h" />
     <ClInclude Include="GeneralMaths.h" />
+    <ClInclude Include="ProblemLambda.h" />
     <ClInclude Include="Poker.h" />
     <ClInclude Include="Primes.h" />
     <ClInclude Include="Problem.h" />

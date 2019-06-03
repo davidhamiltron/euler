@@ -12,7 +12,7 @@
 
 using namespace std;
 
-map<int, Problem> Problems1_25()
+map<int, ProblemLambda> Problems1_25()
 {
 return{
 

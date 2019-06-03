@@ -5,7 +5,7 @@
 
 using namespace std;
 
-map<int, Problem> Problems51_75()
+map<int, ProblemLambda> Problems51_75()
 {
     return{
 

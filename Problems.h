@@ -1,20 +1,20 @@
 #pragma once
 
-#include "Problem.h"
+#include "ProblemLambda.h"
 #include <string>
 #include <map>
 #include <functional>
 
-std::map<int, Problem> Problems1_25();
-std::map<int, Problem> Problems26_50();
-std::map<int, Problem> Problems51_75();
+std::map<int, ProblemLambda> Problems1_25();
+std::map<int, ProblemLambda> Problems26_50();
+std::map<int, ProblemLambda> Problems51_75();
 
+extern std::map<int, ProblemLambda> allProblems;
 
-
-static std::map<int, Problem> Problems()
+static std::map<int, ProblemLambda> Problems()
 {
-    std::map<int, Problem> problems = Problems1_25();
-    std::map<int, Problem> nextProblems = Problems26_50();
+    std::map<int, ProblemLambda> problems = Problems1_25();
+    std::map<int, ProblemLambda> nextProblems = Problems26_50();
     problems.insert(nextProblems.begin(), nextProblems.end());
     nextProblems = Problems51_75();
     problems.insert(nextProblems.begin(), nextProblems.end());
@@ -23,10 +23,23 @@ static std::map<int, Problem> Problems()
 
 
 
+static std::map<int, ProblemLambda> GetProblems()
+{
+    void P1(); P1();
+    void P29(); P29();
+    class Problem1; 
+    return allProblems;
+}
+
+static void AddProblem(ProblemLambda p)
+{
+    allProblems.insert(make_pair(p.Number(), p));
+}
+
 #define ProblemStart(number, description) \
-    {number, Problem(number, string(description), \
+    {number, ProblemLambda(number, description, \
     []() -> std::string { \
-    int64_t answer = 0; 
+    int64_t answer = 0;
 
 #define ProblemEnd \
     return to_string(answer); \
