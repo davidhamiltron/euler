@@ -41,7 +41,9 @@ void ProblemLambda::Solve()
 
 void ProblemLambda::Report()
 {
+    cout << "Problem " << number << ": " << description << endl;
     cout << "Answer: " << answer << " in " << durationMs << "ms" << endl;
+    cout << endl;
 }
 
 /*

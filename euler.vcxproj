@@ -163,6 +163,8 @@
     <ClCompile Include="problems\1.cpp" />
     <ClCompile Include="problems\26.cpp" />
     <ClCompile Include="problems\29.cpp" />
+    <ClCompile Include="problems\54.cpp" />
+    <ClCompile Include="problems\67.cpp" />
     <ClCompile Include="Stopwatch.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>

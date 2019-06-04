@@ -34,7 +34,6 @@ void main(int argc, char* argv[])
         for (auto problem : allProblems)
         {
             problem.second.Solve();
-            cout << endl;
         }
     }
 

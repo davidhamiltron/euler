@@ -18,41 +18,16 @@ void P29() {
 
                 //map<pair<int, int>, bool> done;
                 set<BigInteger> values;
-                set<double> v;
-                vector<double> all;
                 unordered_map<double, bool> m;
-                for (int a = 2; a <= 100; a++)
-                {
-                    for (int b = 2; b <= 100; b++)
-                    {
-                        //SortedSet set = new SortedSet();
 
-                        for (int a = 2; a <= 100; a++) {
-                            for (int b = 2; b <= 100; b++) {
-                                double result = pow(a, b);
-                                m[result] = true;
-                                //v.insert(result);
-                                //all.push_back(result);
-                            }
-                        }
-                       // BigInteger value(to_string(a));
-                        //cout << value.GetNumber() << endl;
-                        //value.Pow(b);
-                        //cout << endl;
-                        //cout << a << "^" << b << " = " << value << endl;
-                        //values.insert(value); 
-                        //for (auto &i : values) {
-                        //    cout << i << " ";
-                        //}
-                        //cout << endl;
+                for (int a = 2; a <= 100; a++) {
+                    for (int b = 2; b <= 100; b++) {
+                        double result = pow(a, b);
+                        m[result] = true;
                     }
                 }
                 
-               // cout << endl;
-                //int answer = m.size(); // (int)v.size();
-                int answer = m.size();
-                cout << answer << endl;
-                return to_string(answer);
+                return to_string(m.size());
             }
         });
 };

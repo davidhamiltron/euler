@@ -16,13 +16,6 @@ map<int, ProblemLambda> Problems51_75()
             answer = 0;
 
 
-        ProblemEnd
-
-        ProblemStart(67, "Add all the natural numbers below 1000 that are multiples of 3 or 5.")
-
-            answer = 2;
-
-
         ProblemEndLast
 
     };

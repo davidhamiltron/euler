@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <set>
 #include "String.h"
 
 namespace Poker
@@ -18,16 +19,16 @@ namespace Poker
 
     enum Result
     {
-        RoyalFlush,
-        StraightFlush,
-        FourOfAKind,
-        FullHouse,
-        Flush,
-        Straight,
-        ThreeOfAKind,
-        TwoPairs,
+        HighCard,
         OnePair,
-        HighCard
+        TwoPairs,
+        ThreeOfAKind,
+        Straight,
+        Flush,
+        FullHouse,
+        FourOfAKind,
+        StraightFlush,
+        RoyalFlush
     };
 
 
@@ -63,12 +64,14 @@ namespace Poker
         Suit suit;
     };
 
-    bool cardSort(const Card &a, const Card &b) { return (a.value < b.value); }
+    static bool cardSort(const Card &a, const Card &b) { return (a.value < b.value); }
 
     class Hand
     {
     public:
         std::vector<Card> cards;
+        std::map<int, int> cardCountsMap;
+        std::vector<int> cardCounts;
         std::vector<int> cardValues;
         Result result;
 
@@ -82,6 +85,85 @@ namespace Poker
             }
         }
 
+        bool IsStraight()
+        {
+            return cards[0].value == cards[4].value + 4;
+        }
+
+        bool IsFlush()
+        {
+            auto suit = cards[0].suit;
+            for (auto card : cards)
+                if (suit != card.suit)
+                    return false;
+            return true;
+        }
+
+        Result IdentifyResult()
+        {
+            std::sort(cards.begin(), cards.end(), cardSort);
+            bool isStraight = IsStraight();
+            bool isFlush = IsFlush();
+            if (isStraight && isFlush)
+            {
+                if (cards[4].value = 14) // Ace
+                    return Result::RoyalFlush;
+                else
+                    return Result::StraightFlush;
+            }
+            else if (isStraight)
+            {
+                return Result::Straight;
+            }
+            else if (isFlush)
+            {
+                return Result::Flush;
+            }
+
+
+            for (auto &card : cards) {
+                if(cardCountsMap.count(card.value) == 0)
+                    cardCountsMap[card.value] = 1;
+                else
+                    cardCountsMap[card.value]++;
+            }
+            
+            for (auto count : cardCountsMap) {
+                cardCounts.push_back(count.second);
+            }
+
+            std::sort(cardCounts.begin(), cardCounts.end());
+
+            if (cardCounts.size() == 2)
+            {
+                if (cardCounts[1] == 4)
+                    return Result::FourOfAKind;
+                else
+                    return Result::FullHouse;
+            }
+            
+            if (cardCounts.size() == 3)
+            {
+                if (cardCounts[2] == 3)
+                    return Result::ThreeOfAKind;
+                else
+                    return Result::TwoPairs;
+            }
+
+            if (cardCounts.size() == 4)
+                return Result::OnePair;
+
+            return Result::HighCard;
+        }
+
+        void Score()
+        {
+            result = IdentifyResult();
+            for (auto &card : cards)
+                cardValues.push_back(card.value);
+        }
+
+        /*
         void Score()
         {
             std::sort(cards.begin(), cards.end(), cardSort);
@@ -179,7 +261,7 @@ namespace Poker
             {
                 cardValues.push_back(c.value);
             }
-        }
+        }*/
 
         bool Beats(Hand &hand)
         {
@@ -204,7 +286,7 @@ namespace Poker
             {
                 if (hand.result == FourOfAKind)
                 {
-                    if (cardValues[0] > hand.cardValues[0])
+                    if (cardCounts[1] > hand.cardCounts[1])
                         return true;
                     else
                         return false;
@@ -219,11 +301,11 @@ namespace Poker
             {
                 if (hand.result == FullHouse)
                 {
-                    if (cardValues[0] > hand.cardValues[0])
+                    if (cardCounts[1] > hand.cardCounts[1])
                         return true;
                     else
                     {
-                        if (cardValues[10] > hand.cardValues[1])
+                        if (cardCounts[0] > hand.cardCounts[0])
                             return true;
                         return false;
                     }
@@ -234,6 +316,110 @@ namespace Poker
                 }
             }
 
+            if (result == Flush)
+            {
+                if (hand.result == Flush)
+                {
+                    for (int i = 4; i >= 0; i--)
+                    {
+                        if (cardValues[i] == hand.cardValues[i]) continue;
+                        if (cardValues[i] > hand.cardValues[i])
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            if (result == Straight)
+            {
+                if (hand.result == Straight)
+                {
+                    if (cardValues[4] > hand.cardValues[4])
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            if (result == ThreeOfAKind)
+            {
+                if (hand.result == ThreeOfAKind)
+                {
+                    for (int i = 2; i >= 0; i++)
+                    {
+                        if (cardValues[i] == hand.cardValues[i]) continue;
+                        if (cardValues[i] > hand.cardValues[i])
+                            return true;
+                        else
+                            return false;
+                    }
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            if (result == TwoPairs)
+            {
+                if (hand.result == TwoPairs)
+                {
+                    for (int i = 2; i >= 0; i++)
+                    {
+                        if (cardValues[i] == hand.cardValues[i]) continue;
+                        if (cardValues[i] > hand.cardValues[i])
+                            return true;
+                        else
+                            return false;
+                    }
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            if (result == OnePair)
+            {
+                if (hand.result == OnePair)
+                {
+                    for (int i = 3; i >= 0; i++)
+                    {
+                        if (cardValues[i] == hand.cardValues[i]) continue;
+                        if (cardValues[i] > hand.cardValues[i])
+                            return true;
+                        else
+                            return false;
+                    }
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+
+            // High card
+            for (int i = 4; i >= 0; i--)
+            {
+                if (cardValues[i] > hand.cardValues[i])
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
     };
 
@@ -252,18 +438,17 @@ namespace Poker
 
         int Result()
         {
-            /*
-            if (hands[0].Score() > hands[1].Score())
+            hands[0].Score();
+            hands[1].Score();
+            if (hands[0].Beats(hands[1]))
             {
-                std::cout << "Player 1 won" << std::endl;
                 return 1;
             }
             else
             {
-                std::cout << "Player 2 won" << std::endl;
                 return 2;
             }
-            */
+            
             return 1;
         }
     };
