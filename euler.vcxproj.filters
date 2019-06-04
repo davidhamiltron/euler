@@ -69,6 +69,9 @@
     <ClCompile Include="problems\54.cpp">
       <Filter>Source Files\Problems</Filter>
     </ClCompile>
+    <ClCompile Include="PokerTest.cpp">
+      <Filter>Source Files\Libraries</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigInteger.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files\Libraries</Filter>
     </ClInclude>
     <ClInclude Include="ProblemLambda.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -31,10 +31,7 @@ void P54() {
                     {
                         player1Won++;
                     }
-                    cout << count << ": " << result << endl;
-                    
                 }
-                
 
                 return to_string(player1Won);
             }

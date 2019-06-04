@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <string>
 #include <set>
+#include <map>
 #include "String.h"
 
 namespace Poker
@@ -70,7 +71,8 @@ namespace Poker
     {
     public:
         std::vector<Card> cards;
-        std::map<int, int> cardCountsMap;
+        std::map<int, int> cardCountsMapByValue;
+        std::map<int, int> cardCountsMapByCount;
         std::vector<int> cardCounts;
         std::vector<int> cardValues;
         Result result;
@@ -87,7 +89,10 @@ namespace Poker
 
         bool IsStraight()
         {
-            return cards[0].value == cards[4].value + 4;
+            return  cards[1].value == (cards[0].value + 1) && 
+                    cards[2].value == (cards[0].value + 2) &&
+                    cards[3].value == (cards[0].value + 3) &&
+                    cards[4].value == (cards[0].value + 4);
         }
 
         bool IsFlush()
@@ -106,7 +111,7 @@ namespace Poker
             bool isFlush = IsFlush();
             if (isStraight && isFlush)
             {
-                if (cards[4].value = 14) // Ace
+                if (cards[4].value == 14) // Ace
                     return Result::RoyalFlush;
                 else
                     return Result::StraightFlush;
@@ -122,14 +127,15 @@ namespace Poker
 
 
             for (auto &card : cards) {
-                if(cardCountsMap.count(card.value) == 0)
-                    cardCountsMap[card.value] = 1;
+                if(cardCountsMapByValue.count(card.value) == 0)
+                    cardCountsMapByValue[card.value] = 1;
                 else
-                    cardCountsMap[card.value]++;
+                    cardCountsMapByValue[card.value]++;
             }
             
-            for (auto count : cardCountsMap) {
+            for (auto count : cardCountsMapByValue) {
                 cardCounts.push_back(count.second);
+                cardCountsMapByCount[count.second] = count.first;
             }
 
             std::sort(cardCounts.begin(), cardCounts.end());
@@ -163,253 +169,128 @@ namespace Poker
                 cardValues.push_back(card.value);
         }
 
-        /*
-        void Score()
-        {
-            std::sort(cards.begin(), cards.end(), cardSort);
-
-            bool straight = true;
-            bool flush = true;
-            Suit flushSuit = None;
-            int sameValue = 0;
-            int prevValue = 0;
-            vector<int> sameCount;
-            vector<int> sameValues;
-            sameCount.push_back(0);
-            sameCount.push_back(0);
-            int sameCountIndex = 0;
-
-            for (auto c : cards)
-            {
-                if (flushSuit == None)
-                {
-                    flushSuit = c.suit;
-                }
-                else if(flushSuit != c.suit)
-                {
-                    flush = false;
-                }
-
-                if (c.value == prevValue)
-                {
-                    if (sameValue == c.value) // something we've seen before, just count  
-                    {
-                        sameCount[sameCountIndex]++;
-                    }
-                    else // a new set
-                    {
-                        if (sameCount[sameCountIndex] > 0)  // second pair so advance and count
-                        {
-                            sameCountIndex++;
-                        }
-
-                        sameCount[sameCountIndex] += 2;
-                        sameValue = c.value;
-                        sameValues.push_back(sameValue);
-                    }
-
-                }
-
-                if (prevValue != 0 && c.value - prevValue != 1) // if the gaps between each card = 1, then it's a straight
-                    straight = false;
-
-                prevValue = c.value;
-            }
-
-            if (straight && flush)
-            {
-                if (cards[4].value == 14)
-                {
-                    result = RoyalFlush;
-                }
-                else
-                {
-                    result = StraightFlush;
-                    cardValues.push_back(cards[4].value);
-                }
-            }
-
-            if (sameCount[0] == 4 || sameCount[1] == 4)
-            {
-                result = FourOfAKind;
-            }
-
-            if ((sameCount[0] == 3 && sameCount[1] == 2) ||
-                (sameCount[1] == 3 && sameCount[0] == 2))
-                result = FullHouse;
-             
-            if (flush)
-                result = Flush;
-
-            if (straight)
-            {
-                result = Straight;
-                //cardValues.push_back[cards[4].value];
-            }
-
-            if (sameCount[0] == 3)
-                result = ThreeOfAKind;
-
-            if (sameCount[0] == 2 && sameCount[1] == 2)
-                result = TwoPairs;
-
-            if (sameCount[0] == 2)
-                result = OnePair;
-
-            result = HighCard;
-            for (auto c : cards)
-            {
-                cardValues.push_back(c.value);
-            }
-        }*/
-
         bool Beats(Hand &hand)
         {
-            if (result == RoyalFlush) return true;
+            // If the overall result is clearly different then we have a winner
+            if ((int)result > (int)hand.result) return true;
+            if ((int)result < (int)hand.result) return false;
+
+            // But if both hands have the same result we need to investigate further
+
+            if (result == RoyalFlush)
+            {
+                return true; // No draws in the data set
+            }
 
             if (result == StraightFlush)
             {
-                if (hand.result == StraightFlush)
-                {
-                    if (cardValues[0] > hand.cardValues[0])
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
+                if (cardValues[0] > hand.cardValues[0])
                     return true;
-                }
+                else
+                    return false;
             }
 
             if (result == FourOfAKind)
             {
-                if (hand.result == FourOfAKind)
-                {
-                    if (cardCounts[1] > hand.cardCounts[1])
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
+                if (cardCountsMapByCount[4] > hand.cardCountsMapByCount[4])
                     return true;
-                }
+                else
+                    return false;
             }
 
             if (result == FullHouse)
             {
-                if (hand.result == FullHouse)
-                {
-                    if (cardCounts[1] > hand.cardCounts[1])
-                        return true;
-                    else
-                    {
-                        if (cardCounts[0] > hand.cardCounts[0])
-                            return true;
-                        return false;
-                    }
-                }
+                if (cardCountsMapByCount[3] > hand.cardCountsMapByCount[3])
+                    return true;
                 else
                 {
-                    return true;
+                    if (cardCountsMapByCount[2] > hand.cardCountsMapByCount[2])
+                        return true;
+                    return false;
                 }
             }
 
             if (result == Flush)
             {
-                if (hand.result == Flush)
+                for (int i = 4; i >= 0; i--)
                 {
-                    for (int i = 4; i >= 0; i--)
-                    {
-                        if (cardValues[i] == hand.cardValues[i]) continue;
-                        if (cardValues[i] > hand.cardValues[i])
-                            return true;
-                        else
-                            return false;
-                    }
-                }
-                else
-                {
-                    return true;
+                    if (cardValues[i] == hand.cardValues[i]) continue;
+                    if (cardValues[i] > hand.cardValues[i])
+                        return true;
+                    else
+                        return false;
                 }
             }
 
             if (result == Straight)
             {
-                if (hand.result == Straight)
-                {
-                    if (cardValues[4] > hand.cardValues[4])
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
+                if (cardValues[4] > hand.cardValues[4])
                     return true;
-                }
+                else
+                    return false;
             }
 
             if (result == ThreeOfAKind)
             {
-                if (hand.result == ThreeOfAKind)
+                if (cardCountsMapByCount[3] > hand.cardCountsMapByCount[3]) return true;
+                if (cardCountsMapByCount[3] < hand.cardCountsMapByCount[3]) return false;
+
+                // Remove already compared value so we can compare the others
+                cardValues.erase(std::remove(cardValues.begin(), cardValues.end(), cardCountsMapByCount[3]), cardValues.end());
+                hand.cardValues.erase(std::remove(hand.cardValues.begin(), hand.cardValues.end(), hand.cardCountsMapByCount[3]), hand.cardValues.end());
+
+                for (int i = 1; i >= 0; i++)
                 {
-                    for (int i = 2; i >= 0; i++)
-                    {
-                        if (cardValues[i] == hand.cardValues[i]) continue;
-                        if (cardValues[i] > hand.cardValues[i])
-                            return true;
-                        else
-                            return false;
-                    }
-                    return false;
+                    if (cardValues[i] == hand.cardValues[i]) continue;
+                    if (cardValues[i] > hand.cardValues[i])
+                        return true;
+                    else
+                        return false;
                 }
-                else
-                {
-                    return true;
-                }
+                return false;
             }
 
             if (result == TwoPairs)
             {
-                if (hand.result == TwoPairs)
+                int remainingCard = cardCountsMapByCount[1];
+                int remainingCardCompare = hand.cardCountsMapByCount[1];
+
+                cardValues.erase(std::remove(cardValues.begin(), cardValues.end(), cardCountsMapByCount[1]), cardValues.end());
+                hand.cardValues.erase(std::remove(hand.cardValues.begin(), hand.cardValues.end(), hand.cardCountsMapByCount[1]), hand.cardValues.end());
+
+                for (int i = 1; i >= 0; i++)
                 {
-                    for (int i = 2; i >= 0; i++)
-                    {
-                        if (cardValues[i] == hand.cardValues[i]) continue;
-                        if (cardValues[i] > hand.cardValues[i])
-                            return true;
-                        else
-                            return false;
-                    }
-                    return false;
+                    if (cardValues[i] == hand.cardValues[i]) continue;
+                    if (cardValues[i] > hand.cardValues[i])
+                        return true;
+                    else
+                        return false;
                 }
-                else
-                {
+
+                if (remainingCard > remainingCardCompare)
                     return true;
-                }
+                else
+                    return false;
             }
 
             if (result == OnePair)
             {
-                if (hand.result == OnePair)
-                {
-                    for (int i = 3; i >= 0; i++)
-                    {
-                        if (cardValues[i] == hand.cardValues[i]) continue;
-                        if (cardValues[i] > hand.cardValues[i])
-                            return true;
-                        else
-                            return false;
-                    }
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
+                if (cardCountsMapByCount[2] > hand.cardCountsMapByCount[2]) return true;
+                if (cardCountsMapByCount[2] < hand.cardCountsMapByCount[2]) return false;
 
+                cardValues.erase(std::remove(cardValues.begin(), cardValues.end(), cardCountsMapByCount[2]), cardValues.end());
+                hand.cardValues.erase(std::remove(hand.cardValues.begin(), hand.cardValues.end(), hand.cardCountsMapByCount[2]), hand.cardValues.end());
+
+                for (int i = 2; i >= 0; i--)
+                {
+                    if (cardValues[i] == hand.cardValues[i]) continue;
+                    if (cardValues[i] > hand.cardValues[i])
+                        return true;
+                    else
+                        return false;
+                }
+                return false;
+            }
 
             // High card
             for (int i = 4; i >= 0; i--)

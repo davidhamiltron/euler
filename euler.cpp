@@ -10,16 +10,23 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include "Tests.h"
+#include "UnitTesting/UnitTesting.h"
+
 using namespace std;
 
 // Global variable to hold all problems, we will add to this in GetProblems
 std::map<int, ProblemLambda> allProblems;
 
 int ParseCommandLine(int argc, char* argv[]);
+int RunTests();
 
-void main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	int problemNum = ParseCommandLine(argc, argv);
+
+    if (problemNum == -1)
+        return RunTests();
 
 	GetProblems();
 
@@ -50,6 +57,12 @@ int ParseCommandLine(int argc, char* argv[])
 	if(argc > 1)
 	{
 		string s(argv[1]);
+        if (s == "test")
+        {
+            return -1;
+        }
+
+
 		iProblemNum = ToInt(s);
 
 	}
@@ -57,6 +70,12 @@ int ParseCommandLine(int argc, char* argv[])
 	return iProblemNum;
 }
 
+int RunTests()
+{
+    PokerTest();
+
+    EndTest
+}
 /*
 vector<Problem*> GetProblems()
 {

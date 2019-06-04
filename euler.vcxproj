@@ -117,6 +117,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>$(TargetPath) test</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Run tests</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -154,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="BigInteger.cpp" />
     <ClCompile Include="euler.cpp" />
+    <ClCompile Include="PokerTest.cpp" />
     <ClCompile Include="Primes.cpp" />
     <ClCompile Include="Problem.cpp" />
     <ClCompile Include="ProblemLambda.cpp" />
@@ -178,6 +185,7 @@
     <ClInclude Include="Problems.h" />
     <ClInclude Include="Stopwatch.h" />
     <ClInclude Include="String.h" />
+    <ClInclude Include="Tests.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
