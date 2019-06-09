@@ -73,6 +73,7 @@ int ParseCommandLine(int argc, char* argv[])
 int RunTests()
 {
     PokerTest();
+    GeneralMathsTest();
 
     EndTest
 }

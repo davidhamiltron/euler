@@ -3,3 +3,4 @@
 
 
 void PokerTest();
+void GeneralMathsTest();

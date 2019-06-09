@@ -28,6 +28,9 @@ static std::map<int, ProblemLambda> GetProblems()
     allProblems = Problems();
     void P1(); P1();
     void P29(); P29();
+    void P30(); P30();
+    void P31(); P31();
+    void P32(); P32();
     void P54(); P54();
     //void P67(); P67();
     return allProblems;

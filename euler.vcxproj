@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="BigInteger.cpp" />
     <ClCompile Include="euler.cpp" />
+    <ClCompile Include="GeneralMathsTest.cpp" />
     <ClCompile Include="PokerTest.cpp" />
     <ClCompile Include="Primes.cpp" />
     <ClCompile Include="Problem.cpp" />
@@ -170,6 +171,9 @@
     <ClCompile Include="problems\1.cpp" />
     <ClCompile Include="problems\26.cpp" />
     <ClCompile Include="problems\29.cpp" />
+    <ClCompile Include="problems\30.cpp" />
+    <ClCompile Include="problems\31.cpp" />
+    <ClCompile Include="problems\32.cpp" />
     <ClCompile Include="problems\54.cpp" />
     <ClCompile Include="problems\67.cpp" />
     <ClCompile Include="Stopwatch.cpp" />

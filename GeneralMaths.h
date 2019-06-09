@@ -2,6 +2,9 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <vector>
+#include <map>
 #include "BigInteger.h"
 
 static int Fibonacci(int a, int b)
@@ -113,11 +116,11 @@ static std::string NumLessThan100ToWords(int a, bool partOfLarger)
     }
     else
     {
-        vector<int> digits = ToDigits(a);
-        words += string(tens[digits[1]]);
+        std::vector<int> digits = ToDigits(a);
+        words += std::string(tens[digits[1]]);
         if (digits[0] != 0)
         {
-            words += string(oneToTwenty[digits[0]]);
+            words += std::string(oneToTwenty[digits[0]]);
         }
     }
 
@@ -125,7 +128,7 @@ static std::string NumLessThan100ToWords(int a, bool partOfLarger)
 
 }
 
-static string NumToWords(int a)
+static std::string NumToWords(int a)
 {
 
     if (a == 1000)
@@ -142,15 +145,15 @@ static string NumToWords(int a)
         partOfLarger = false;
     }
 
-    string words;
+    std::string words;
     words += NumLessThan100ToWords(partLessThan100, partOfLarger);
 
-    vector<int> digits = ToDigits(a);
+    std::vector<int> digits = ToDigits(a);
     int numDigits = (int)digits.size();
 
     for (int i = numDigits - 1; i >= 0; i--)
     {
-        words = string(oneToTwenty[digits[i]]) + "hundred" + words;
+        words = std::string(oneToTwenty[digits[i]]) + "hundred" + words;
     }
     return words;
 
@@ -172,9 +175,24 @@ static bool IsPalindrome(int a)
     return true;
 }
 
-static vector<int> Factorise(int n, int &sum)
+static bool IsPandigital(int n, int numDigits)
 {
-    vector<int> factors;
+    std::vector<int> digits = ToDigits(n);
+    if (digits.size() != numDigits) return false;
+    std::map<int, int> seen;
+    for (int i : digits)
+    {
+        if (i == 0) return false;
+        seen[i]++;
+        if (seen[i] >= 2) return false;
+    }
+
+    return true;
+}
+
+static std::vector<int> Factorise(int n, int &sum)
+{
+    std::vector<int> factors;
     int largest = (int)sqrt((float)(n));
     sum = 1;
     factors.push_back(1);
