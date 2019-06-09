@@ -84,6 +84,9 @@
     <ClCompile Include="GeneralMathsTest.cpp">
       <Filter>Source Files\Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="problems\34.cpp">
+      <Filter>Source Files\Problems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BigInteger.h">
