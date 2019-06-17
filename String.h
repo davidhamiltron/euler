@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 std::string ToString(int i);
@@ -37,4 +38,21 @@ static void Split(std::vector<std::string> &tokens, const std::string &s, const 
     std::string last = s.substr(prev);
     if (last.size())
         tokens.push_back(last);
+}
+
+static std::vector<std::string> GetLines(const std::string &fileName)
+{
+    std::ifstream inFile;
+    inFile.open(std::string("problems/data/") + fileName);
+    if (!(inFile && inFile.is_open())) throw std::runtime_error("could not open file");
+
+    std::vector<std::string> lines;
+
+    std::string line;
+    while (!inFile.eof())
+    {
+        getline(inFile, line);
+        lines.push_back(line);
+    }
+    return lines;
 }

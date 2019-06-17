@@ -4,6 +4,9 @@
 #include <iterator>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 #include "Problems.h"
 #include "GeneralMaths.h"
@@ -16,43 +19,43 @@ map<int, ProblemLambda> Problems1_25()
 {
 return{
 
-ProblemStart(1, "Add all the natural numbers below 1000 that are multiples of 3 or 5.")
+    ProblemStart(1, "Add all the natural numbers below 1000 that are multiples of 3 or 5.")
 
-    int limit = 1000;
-    int sum = 0; // sum of all the multiples
+        int limit = 1000;
+        int sum = 0; // sum of all the multiples
 
-    for (int i = 0; i < limit; i++)
-    {
-        if (i % 3 == 0 || i % 5 == 0)
+        for (int i = 0; i < limit; i++)
         {
-            sum += i;
+            if (i % 3 == 0 || i % 5 == 0)
+            {
+                sum += i;
+            }
         }
-    }
 
-    answer = sum;
+        answer = sum;
 
-ProblemEnd
+    ProblemEnd
 
-ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequence which do not exceed one million.")
+    ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequence which do not exceed one million.")
 
-    int a = 1;
-    int b = 2;
-    int c = 0;
-    int sum = 2;  // Already seen one even number
+        int a = 1;
+        int b = 2;
+        int c = 0;
+        int sum = 2;  // Already seen one even number
 
-    while (c < 1000000)
-    {
-        c = Fibonacci(a, b);
-        if (c % 2 == 0)
+        while (c < 1000000)
         {
-            sum += c;
+            c = Fibonacci(a, b);
+            if (c % 2 == 0)
+            {
+                sum += c;
+            }
+            a = b;
+            b = c;
+
         }
-        a = b;
-        b = c;
 
-    }
-
-    answer = sum;
+        answer = sum;
 
     ProblemEnd
 
@@ -158,6 +161,326 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
 
     ProblemEnd
 
+    ProblemStart(8, "Find the greatest product of five consecutive digits in the 1000-digit number.")
+
+        auto lines = GetLines("8.txt");
+    
+        char num[1001];
+
+        strncpy_s(num, lines[0].c_str(), lines[0].size());
+
+        int largestProduct = 0;
+        int product = 0;
+
+        for (int i = 0; i < (1000 - 4); i++)
+        {
+            product =
+                (int)(num[i] - 48) *
+                (int)(num[i + 1] - 48) *
+                (int)(num[i + 2] - 48) *
+                (int)(num[i + 3] - 48) *
+                (int)(num[i + 4] - 48);
+
+            if (product > largestProduct)
+                largestProduct = product;
+        }
+
+        answer = largestProduct;
+
+    ProblemEnd
+
+    ProblemStart(9, "Find the only Pythagorean triplet, {a, b, c}, for which a + b + c = 1000.")
+
+        int product = 0;
+        float c = 0;
+        int a = 1;
+        int b = 1;
+        bool found = false;
+
+        for (a = 1; a < 500; a++)
+        {
+            for (b = 1; b < 500; b++)
+            {
+                c = sqrt((float)((a*a) + (b*b)));
+                if (a + b + c == 1000)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) break;
+        }
+
+        //cout << a << " " << b << " " << c << endl;
+
+        product = a * b * (int)c;
+
+        answer = product;
+
+    ProblemEnd
+
+    ProblemStart(10, "Calculate the sum of all the primes below one million.")
+
+        __int64 sum = 0;
+
+        for (int i = 0; i < 1000000; i++)
+        {
+            if (IsPrime(i))
+            {
+                sum += i;
+            }
+        }
+        answer = sum;
+
+    ProblemEnd
+
+    ProblemStart(11, "What is the greatest product of four numbers on the same straight line in the 20 by 20 grid?")
+
+        auto lines = GetLines("11.txt");
+        vector<string> numbers;
+
+        vector<vector<int>> grid;
+        vector<int> row;
+
+        for (auto line : lines)
+        {
+            if (line.empty()) continue;
+            Split(numbers, line, " ");
+            row.clear();
+            for (auto number : numbers)
+            {
+                row.push_back(stoi(number));
+            }
+            grid.push_back(row);
+        }
+    
+
+        int largestProduct = 0;
+
+        int product;
+
+        // horizontal
+        for (unsigned int i = 0; i < grid.size(); i++)
+        {
+            for (unsigned int j = 0; j < grid[i].size() - 3; j++)
+            {
+                product = grid[i][j] * grid[i][j + 1] * grid[i][j + 2] * grid[i][j + 3];
+                if (product > largestProduct)
+                {
+                    largestProduct = product;
+                }
+            }
+        }
+
+
+        // vertical
+        for (unsigned int i = 0; i < grid.size() - 3; i++)
+        {
+            for (unsigned int j = 0; j < grid[i].size(); j++)
+            {
+                product = grid[i][j] * grid[i + 1][j] * grid[i + 2][j] * grid[i + 3][j];
+                if (product > largestProduct)
+                {
+                    largestProduct = product;
+                }
+            }
+        }
+
+        // forwards diagonal
+        for (unsigned int i = 0; i < grid.size() - 3; i++)
+        {
+            for (unsigned int j = 0; j < grid[i].size() - 3; j++)
+            {
+                product = grid[i][j] * grid[i + 1][j + 1] * grid[i + 2][j + 2] * grid[i + 3][j + 3];
+                if (product > largestProduct)
+                {
+                    largestProduct = product;
+                }
+            }
+        }
+
+        // back diagonal
+        for (unsigned int i = 0; i < (grid.size() - 3); i++)
+        {
+            for (unsigned int j = 3; j < grid[i].size(); j++)
+            {
+                product = grid[i][j] * grid[i + 1][j - 1] * grid[i + 2][j - 2] * grid[i + 3][j - 3];
+                if (product > largestProduct)
+                {
+                    largestProduct = product;
+                }
+            }
+        }
+
+        answer = largestProduct;
+
+    ProblemEnd
+
+    ProblemStart(12, "What is the first triangle number to have over five-hundred divisors?")
+
+        int target = 500;
+
+        __int64 triangle = 0;
+
+        int i = 1;
+
+        int numFactors = 0;
+        map<__int64, int> primeFactors;
+        map<__int64, int>::iterator mapItr;
+
+        while (true)
+        {
+            triangle += i;
+
+            primeFactors = PrimeFactorise(triangle, 100);
+
+            numFactors = 1;
+            mapItr = primeFactors.begin();
+            // Calculate number of factors from prime factors
+            while (mapItr != primeFactors.end())
+            {
+                if ((*mapItr).second > 0)
+                    numFactors *= (*mapItr).second + 1;
+                mapItr++;
+            }
+
+            if (numFactors > target)
+                break;
+
+            i++;
+        }
+
+        answer = i;
+    
+        ProblemEnd
+
+    ProblemStart(13, "Find the first ten digits of the sum of one-hundred 50-digit numbers.")
+
+        auto lines = GetLines("13.txt");
+
+        string number;
+        BigInteger result;
+        for(auto line : lines)
+        {
+            BigInteger n(line);
+            result.Add(n);
+        }
+        string sum = result.ToString().substr(0, 10);
+        stringstream ss(sum);
+        __int64 firstTen = 0;
+        ss >> firstTen;
+        answer = firstTen;
+
+    ProblemEnd
+
+    ProblemStart(14, "Find the longest sequence using a starting number under one million.")
+
+        int max = 0;
+        int count = 0;
+        int num = 0;
+        int i = 1;
+
+        for (i = 1; i < 1000000; i++)
+        {
+            count = SequenceLength((__int64)i);
+            if (count > max)
+            {
+                max = count;
+                num = i;
+            }
+        }
+        answer = num;
+
+    ProblemEnd
+
+    ProblemStart(15, "Starting in the top left corner in a 20 by 20 grid, how many routes are there to the bottom right corner?")
+
+        // The route problem is a special case of Pascals triangle, where the top of the triangle
+        // is the bottom right of the grid and contains the possible routes from there to the end
+        // Therefore all we need to do for an n x n grid is calculate the number at position 2n, n
+        // of Pascals triangle.
+        //
+        // P(r,c) = ((r + 1 - c) / c) * P(r, c - 1)
+        answer = (__int64)PascalsValueAt(40, 20);
+
+    ProblemEnd
+
+    ProblemStart(16, "Calculate the sum of all the primes below one million.")
+
+        __int64 sum = 0;
+
+        for (int i = 0; i < 1000000; i++)
+        {
+            if (IsPrime(i))
+            {
+                sum += i;
+            }
+        }
+        answer = sum;
+
+    ProblemEnd
+
+    ProblemStart(17, "How many letters would be needed to write all the numbers in words from 1 to 1000?")
+
+        int sum = 0;
+        string words;
+
+        for (int i = 1; i <= 1000; i++)
+        {
+            words = NumToWords(i);
+            sum += (int)words.size();
+        }
+
+        answer = sum;
+
+    ProblemEnd
+
+    ProblemStart(18, "Calculate the sum of all the primes below one million.")
+
+        __int64 sum = 0;
+
+        for (int i = 0; i < 1000000; i++)
+        {
+            if (IsPrime(i))
+            {
+                sum += i;
+            }
+        }
+        answer = sum;
+
+    ProblemEnd
+
+    ProblemStart(19, "Calculate the sum of all the primes below one million.")
+
+        __int64 sum = 0;
+
+        for (int i = 0; i < 1000000; i++)
+        {
+            if (IsPrime(i))
+            {
+                sum += i;
+            }
+        }
+        answer = sum;
+
+    ProblemEnd
+
+    ProblemStart(20, "Calculate the sum of all the primes below one million.")
+
+        __int64 sum = 0;
+
+        for (int i = 0; i < 1000000; i++)
+        {
+            if (IsPrime(i))
+            {
+                sum += i;
+            }
+        }
+        answer = sum;
+
+    ProblemEnd
+
     ProblemStart(21, "Evaluate the sum of all the amicable numbers under 10000.")
 
         vector<int> sumsByN;
@@ -189,6 +512,31 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
 
     ProblemEnd
 
+    ProblemStart(22, "What is the total of all the name scores in the file?")
+
+        // Note, names text file converted to one name per line
+        auto lines = GetLines("22.txt");
+        
+        set<string> names;
+        for(string name : lines)
+        {
+            names.insert(name);
+        }
+        vector<string> namesVector(names.begin(), names.end());
+
+        int64_t score = 0;
+        int64_t sum = 0;
+        for (int i = 0; i < (int)namesVector.size(); i++)
+        {
+            score = (i + 1) * NameScore(namesVector[i]);
+            if (namesVector[i] == "COLIN")
+                cout << "COLIN " << (i + 1) << " " << score << endl;
+            sum += score;
+        }
+
+        answer = sum;
+
+    ProblemEnd
 
     ProblemStart(23, "Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.")
 
@@ -239,7 +587,6 @@ ProblemStart(2, "Find the sum of all the even-valued terms in the Fibonacci sequ
     ProblemStart(24, "What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?")
         
         vector<int> s = { 0,1,2,3,4,5,6,7,8,9 };
-        //vector<int> s = { 1,2,3,4 };
         int length = (int)s.size();
         int right = length - 1;
         int left = right - 1;

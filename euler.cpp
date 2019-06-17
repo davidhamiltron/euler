@@ -31,20 +31,24 @@ int main(int argc, char* argv[])
 	GetProblems();
 
 	cout << "Project Euler" << endl << endl;
+    
 
 	if(problemNum != 0)
 	{
         allProblems[problemNum].Solve();
+        cout << "Finished." << endl;
 	}
     else
     {
+        Stopwatch s;
+        s.Start();
         for (auto problem : allProblems)
         {
             problem.second.Solve();
         }
+        s.Stop();
+        cout << "Finished in " << s.ElapsedMilliseconds() << "ms in total." << endl;
     }
-
-	cout << "Finished." << endl;
 }
 
 

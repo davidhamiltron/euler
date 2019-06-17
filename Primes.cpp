@@ -4,8 +4,6 @@
 #include <math.h>
 #include "Primes.h"
 
-
-
 vector<int> GeneratePrimes(int max)
 {
 	vector<int> primes;
@@ -181,23 +179,21 @@ int64_t GetPrime(int index)
 /*
 vector<__int64> PrimeFactorise(__int64 a, __int64& iLargestFactor)
 {
+    vector<__int64> vFactors;
+    __int64 iLargest = (__int64)sqrt((float)(a));
+    for(int i = 1; i < iLargest; i++)
+    {
+        if(a%i == 0)
+        {
+            if(IsPrime(i))
+            {
+                cout << i << endl;
+                vFactors.push_back(i);
+                iLargestFactor = i;
+            }
+        }
+    }
 
-cout << "Finding factors:" << endl;
-vector<__int64> vFactors;
-__int64 iLargest = (__int64)sqrt((float)(a));
-for(int i = 1; i < iLargest; i++)
-{
-if(a%i == 0)
-{
-if(IsPrime(i))
-{
-cout << i << endl;
-vFactors.push_back(i);
-iLargestFactor = i;
-}
-}
-}
-
-return vFactors;
+    return vFactors;
 }
 */

@@ -31,7 +31,7 @@ void P32() {
                         //if (!(pandigitalTest > 100000000 && pandigitalTest < 999999999)) continue;
                         if (IsPandigital(pandigitalTest, 9))
                         {
-                            cout << i << " * " << j << " = " << product << endl;
+                            //cout << i << " * " << j << " = " << product << endl;
                             products.insert(product);
                         }
                     }

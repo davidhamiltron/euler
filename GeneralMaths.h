@@ -58,6 +58,60 @@ static std::vector<int> ToDigits(int a)
 
 }
 
+static std::vector<int> ToDigitsBinary(int n)
+{
+    std::vector<int> digits;
+    if (n == 0)
+    {
+        digits.push_back(0);
+        return digits;
+    }
+    int test = n;
+    int count = 0;
+    while (test > 0)
+    {
+        digits.push_back(test & 0b1);
+        test >>= 1;
+    }
+    return digits;
+}
+
+static int NumDigits(int n)
+{
+    return 
+        (n < 10 ? 1 :
+        (n < 100 ? 2 :
+        (n < 1000 ? 3 :
+        (n < 10000 ? 4 :
+        (n < 100000 ? 5 :
+        (n < 1000000 ? 6 :
+        (n < 10000000 ? 7 :
+        (n < 100000000 ? 8 :
+        (n < 1000000000 ? 9 :
+        10)))))))));
+}
+
+static int NumDigitsBinary(int n)
+{
+    if (n == 0) return 1;
+    int test = n;
+    int count = 0;
+    while (test > 0)
+    {
+        test >>= 1;
+        count++;
+    }
+    return count;
+}
+
+static int Rotate(int n, int numDigits)
+{
+    int lastDigit = n % 10;
+    int newN = n / 10;
+    newN += lastDigit * (int)pow(10, numDigits-1);
+    return newN;
+}
+
 
 static char oneToTwenty[20][256] = {
     "zero",
@@ -159,11 +213,8 @@ static std::string NumToWords(int a)
 
 }
 
-
-static bool IsPalindrome(int a)
+static bool IsPalindromeVector(std::vector<int> & digits)
 {
-    std::vector<int> digits = ToDigits(a);
-
     int size = (int)digits.size();
 
     for (int i = 0; i < (size / 2); i++)
@@ -174,6 +225,15 @@ static bool IsPalindrome(int a)
 
     return true;
 }
+
+static bool IsPalindrome(int a)
+{
+    return IsPalindromeVector(ToDigits(a));
+}
+
+
+
+
 
 static bool IsPandigital(int n, int numDigits)
 {
@@ -223,4 +283,63 @@ static bool Abundant(int n)
     int sum = 0;
     Factorise(n, sum);
     return sum > n;
+}
+
+static int NameScore(const std::string &name)
+{
+    int sum = 0;
+    for (char c : name)
+    {
+        sum += (c - 64);
+    }
+
+    return sum;
+}
+
+static int SequenceLength(__int64 n)
+{
+    int count = 1;
+    while (n != 1)
+    {
+        if (n & 1)		n = 3 * n + 1;
+        else		n /= 2;
+        count++;
+    }
+
+    return count;
+}
+
+
+double PascalsValueAt(double row, double column);
+
+static std::vector<int> NumbersByRemovingDigitsFromLeft(int n)
+{
+    std::vector<int> numbers;
+    auto digits = ToDigits(n);
+    int numDigits = (int)digits.size();
+    int currentNumDigits = numDigits - 1;
+
+    for(int i = numDigits - 1; i >= 0; i--)
+    {
+        n -= (digits[i] * (int)pow(10, currentNumDigits));
+        if (n == 0) break;
+        numbers.push_back(n);
+        currentNumDigits--;
+    }
+
+    return numbers;
+}
+
+static std::vector<int> NumbersByRemovingDigitsFromRight(int n)
+{
+    std::vector<int> numbers;
+
+    while (n > 0)
+    {
+        n /= 10;
+        if (n == 0) break;
+        numbers.push_back(n);
+    }
+
+    return numbers;
 }

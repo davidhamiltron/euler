@@ -17,14 +17,11 @@ void P54() {
                 //int p = g.Result();
                 //int answer = 0;
 
-                char hands[256];
                 int player1Won = 0;
-                ifstream inFile("D:\\programming\\euler\\problems\\54.txt");
-                if (!inFile) return "0";
-                int count = 1;
-                while (!inFile.eof())
+                vector<string> lines = GetLines("54.txt");
+                
+                for(string hands : lines)
                 {
-                    inFile.getline(hands, 256);
                     Poker::Game g(hands);
                     int result = g.Result();
                     if (result == 1)
